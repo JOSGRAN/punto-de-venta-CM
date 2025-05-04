@@ -1,0 +1,27 @@
+[{
+  "_id": {
+    "$oid": "68155029979704df40cc8aac"
+  },
+  "cliente_id": {
+    "$oid": "681549e5979704df40cc8aa9"
+  },
+  "productos": [
+    {
+      "producto_id": {
+        "$oid": "68153de5c2314e15177f3338"
+      },
+      "cantidad": 2,
+      "precio_unitario": 3.5,
+      "total": 7
+    },
+    {
+      "producto_id": {
+        "$oid": "681540fcc2314e15177f3341"
+      },
+      "cantidad": 1,
+      "precio_unitario": 5,
+      "total": 5
+    }
+  ],
+  "total_venta": 12
+}]

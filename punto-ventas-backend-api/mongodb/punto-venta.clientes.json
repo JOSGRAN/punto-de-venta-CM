@@ -1,0 +1,27 @@
+[{
+  "_id": {
+    "$oid": "681549e5979704df40cc8aa9"
+  },
+  "tipo_documento": "DNI",
+  "dni": "12345678",
+  "nombre": "Juan Perez",
+  "telefono": "987654321"
+},
+{
+  "_id": {
+    "$oid": "681549e5979704df40cc8aaa"
+  },
+  "tipo_documento": "DNI",
+  "dni": "87654321",
+  "nombre": "Maria Rodriguez",
+  "telefono": "912345678"
+},
+{
+  "_id": {
+    "$oid": "681549e5979704df40cc8aab"
+  },
+  "tipo_documento": "DNI",
+  "dni": "11223344",
+  "nombre": "Carlos Gomez",
+  "telefono": "900111222"
+}]

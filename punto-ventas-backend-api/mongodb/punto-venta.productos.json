@@ -1,0 +1,342 @@
+[{
+  "_id": {
+    "$oid": "68153de5c2314e15177f3338"
+  },
+  "nombre": "fresas",
+  "precio": 3.5,
+  "categoria_id": {
+    "$oid": "6813e316c2314e15177f3334"
+  },
+  "stock": 100,
+  "descripcion": "Fresas frescas del día",
+  "fecha_vencimiento": {
+    "$date": "2025-12-31T00:00:00.000Z"
+  },
+  "peso": 0.5,
+  "descuento": 10,
+  "imagen": "http://localhost:4000/uploads/frutas/fresas.png"
+},
+{
+  "_id": {
+    "$oid": "68153e66c2314e15177f3339"
+  },
+  "nombre": "manzana",
+  "precio": 2,
+  "categoria_id": {
+    "$oid": "6813e316c2314e15177f3334"
+  },
+  "stock": 150,
+  "descripcion": "Manzanas rojas jugosas",
+  "fecha_vencimiento": {
+    "$date": "2025-11-30T00:00:00.000Z"
+  },
+  "peso": 0.4,
+  "descuento": 5,
+  "imagen": "http://localhost:4000/uploads/frutas/manzana.png"
+},
+{
+  "_id": {
+    "$oid": "68153ea9c2314e15177f333a"
+  },
+  "nombre": "plátano",
+  "precio": 1.8,
+  "categoria_id": {
+    "$oid": "6813e316c2314e15177f3334"
+  },
+  "stock": 120,
+  "descripcion": "Plátanos maduros y dulces",
+  "fecha_vencimiento": {
+    "$date": "2025-12-15T00:00:00.000Z"
+  },
+  "peso": 0.3,
+  "descuento": 8,
+  "imagen": "http://localhost:4000/uploads/frutas/platano.png"
+},
+{
+  "_id": {
+    "$oid": "68153eb1c2314e15177f333b"
+  },
+  "nombre": "uvas",
+  "precio": 4.2,
+  "categoria_id": {
+    "$oid": "6813e316c2314e15177f3334"
+  },
+  "stock": 90,
+  "descripcion": "Uvas verdes sin semillas",
+  "fecha_vencimiento": {
+    "$date": "2025-11-20T00:00:00.000Z"
+  },
+  "peso": 0.6,
+  "descuento": 7,
+  "imagen": "http://localhost:4000/uploads/frutas/uvas.png"
+},
+{
+  "_id": {
+    "$oid": "68153f32c2314e15177f333c"
+  },
+  "nombre": "cebolla",
+  "precio": 1.2,
+  "categoria_id": {
+    "$oid": "6813e316c2314e15177f3334"
+  },
+  "stock": 200,
+  "descripcion": "Cebolla blanca fresca",
+  "fecha_vencimiento": {
+    "$date": "2025-11-01T00:00:00.000Z"
+  },
+  "peso": 0.25,
+  "descuento": 5,
+  "imagen": "http://localhost:4000/uploads/verduras/cebolla.png"
+},
+{
+  "_id": {
+    "$oid": "68153f4fc2314e15177f333d"
+  },
+  "nombre": "lechuga",
+  "precio": 1.5,
+  "categoria_id": {
+    "$oid": "6813e316c2314e15177f3334"
+  },
+  "stock": 150,
+  "descripcion": "Lechuga romana fresca",
+  "fecha_vencimiento": {
+    "$date": "2025-10-25T00:00:00.000Z"
+  },
+  "peso": 0.3,
+  "descuento": 6,
+  "imagen": "http://localhost:4000/uploads/verduras/lechuga.png"
+},
+{
+  "_id": {
+    "$oid": "68153f78c2314e15177f333e"
+  },
+  "nombre": "papa",
+  "precio": 0.9,
+  "categoria_id": {
+    "$oid": "6813e316c2314e15177f3334"
+  },
+  "stock": 300,
+  "descripcion": "Papa amarilla selecta",
+  "fecha_vencimiento": {
+    "$date": "2026-01-10T00:00:00.000Z"
+  },
+  "peso": 0.4,
+  "descuento": 3,
+  "imagen": "http://localhost:4000/uploads/verduras/papa.png"
+},
+{
+  "_id": {
+    "$oid": "68153f98c2314e15177f333f"
+  },
+  "nombre": "tomate",
+  "precio": 2,
+  "categoria_id": {
+    "$oid": "6813e316c2314e15177f3334"
+  },
+  "stock": 180,
+  "descripcion": "Tomate rojo jugoso",
+  "fecha_vencimiento": {
+    "$date": "2025-11-18T00:00:00.000Z"
+  },
+  "peso": 0.35,
+  "descuento": 4,
+  "imagen": "http://localhost:4000/uploads/verduras/tomate.png"
+},
+{
+  "_id": {
+    "$oid": "68153faac2314e15177f3340"
+  },
+  "nombre": "zanahoria",
+  "precio": 1.1,
+  "categoria_id": {
+    "$oid": "6813e316c2314e15177f3334"
+  },
+  "stock": 160,
+  "descripcion": "Zanahoria crocante",
+  "fecha_vencimiento": {
+    "$date": "2025-12-05T00:00:00.000Z"
+  },
+  "peso": 0.28,
+  "descuento": 6,
+  "imagen": "http://localhost:4000/uploads/verduras/zanahoria.png"
+},
+{
+  "_id": {
+    "$oid": "681540fcc2314e15177f3341"
+  },
+  "nombre": "coca cola",
+  "precio": 4,
+  "categoria_id": {
+    "$oid": "6813e7b1c2314e15177f3336"
+  },
+  "stock": 120,
+  "descripcion": "Coca-Cola original 500ml",
+  "fecha_vencimiento": {
+    "$date": "2025-09-30T00:00:00.000Z"
+  },
+  "peso": 0.5,
+  "descuento": 5,
+  "imagen": "http://localhost:4000/uploads/gaseosas/cocacola.png"
+},
+{
+  "_id": {
+    "$oid": "68154136c2314e15177f3342"
+  },
+  "nombre": "guarana",
+  "precio": 3.8,
+  "categoria_id": {
+    "$oid": "6813e7b1c2314e15177f3336"
+  },
+  "stock": 100,
+  "descripcion": "Guarana Antarctica 500ml",
+  "fecha_vencimiento": {
+    "$date": "2025-10-15T00:00:00.000Z"
+  },
+  "peso": 0.5,
+  "descuento": 6,
+  "imagen": "http://localhost:4000/uploads/gaseosas/guarana.png"
+},
+{
+  "_id": {
+    "$oid": "6815415bc2314e15177f3343"
+  },
+  "nombre": "inka kola",
+  "precio": 4.2,
+  "categoria_id": {
+    "$oid": "6813e7b1c2314e15177f3336"
+  },
+  "stock": 130,
+  "descripcion": "Inka Kola botella 500ml",
+  "fecha_vencimiento": {
+    "$date": "2025-11-05T00:00:00.000Z"
+  },
+  "peso": 0.5,
+  "descuento": 7,
+  "imagen": "http://localhost:4000/uploads/gaseosas/incakola.png"
+},
+{
+  "_id": {
+    "$oid": "68154193c2314e15177f3344"
+  },
+  "nombre": "pepsi",
+  "precio": 3.9,
+  "categoria_id": {
+    "$oid": "6813e7b1c2314e15177f3336"
+  },
+  "stock": 110,
+  "descripcion": "Pepsi regular 500ml",
+  "fecha_vencimiento": {
+    "$date": "2025-10-20T00:00:00.000Z"
+  },
+  "peso": 0.5,
+  "descuento": 4,
+  "imagen": "http://localhost:4000/uploads/gaseosas/pepsi.png"
+},
+{
+  "_id": {
+    "$oid": "681541a6c2314e15177f3345"
+  },
+  "nombre": "sprite",
+  "precio": 3.7,
+  "categoria_id": {
+    "$oid": "6813e7b1c2314e15177f3336"
+  },
+  "stock": 115,
+  "descripcion": "Sprite sin cafeína 500ml",
+  "fecha_vencimiento": {
+    "$date": "2025-12-01T00:00:00.000Z"
+  },
+  "peso": 0.5,
+  "descuento": 5,
+  "imagen": "http://localhost:4000/uploads/gaseosas/sprite.png"
+},
+{
+  "_id": {
+    "$oid": "6815440fc2314e15177f3346"
+  },
+  "nombre": "Chips Ahoy",
+  "precio": 2.5,
+  "categoria_id": {
+    "$oid": "6813e8abc2314e15177f3337"
+  },
+  "stock": 80,
+  "descripcion": "Galletas Chips Ahoy con chispas de chocolate",
+  "fecha_vencimiento": {
+    "$date": "2025-11-10T00:00:00.000Z"
+  },
+  "peso": 0.2,
+  "descuento": 5,
+  "imagen": "http://localhost:4000/uploads/galletas/ChipsAhoy.png"
+},
+{
+  "_id": {
+    "$oid": "6815440fc2314e15177f3347"
+  },
+  "nombre": "Margarita",
+  "precio": 1.8,
+  "categoria_id": {
+    "$oid": "6813e8abc2314e15177f3337"
+  },
+  "stock": 100,
+  "descripcion": "Galletas Margarita sabor vainilla",
+  "fecha_vencimiento": {
+    "$date": "2025-10-05T00:00:00.000Z"
+  },
+  "peso": 0.15,
+  "descuento": 0,
+  "imagen": "http://localhost:4000/uploads/galletas/margarita.png"
+},
+{
+  "_id": {
+    "$oid": "6815440fc2314e15177f3348"
+  },
+  "nombre": "Morochas",
+  "precio": 2.2,
+  "categoria_id": {
+    "$oid": "6813e8abc2314e15177f3337"
+  },
+  "stock": 90,
+  "descripcion": "Galletas Morochas cubiertas de chocolate",
+  "fecha_vencimiento": {
+    "$date": "2025-08-20T00:00:00.000Z"
+  },
+  "peso": 0.18,
+  "descuento": 10,
+  "imagen": "http://localhost:4000/uploads/galletas/Morochas.png"
+},
+{
+  "_id": {
+    "$oid": "6815440fc2314e15177f3349"
+  },
+  "nombre": "Oreo",
+  "precio": 2,
+  "categoria_id": {
+    "$oid": "6813e8abc2314e15177f3337"
+  },
+  "stock": 110,
+  "descripcion": "Galletas Oreo rellenas de crema",
+  "fecha_vencimiento": {
+    "$date": "2025-12-15T00:00:00.000Z"
+  },
+  "peso": 0.16,
+  "descuento": 5,
+  "imagen": "http://localhost:4000/uploads/galletas/oreo.png"
+},
+{
+  "_id": {
+    "$oid": "6815440fc2314e15177f334a"
+  },
+  "nombre": "Picaras",
+  "precio": 1.9,
+  "categoria_id": {
+    "$oid": "6813e8abc2314e15177f3337"
+  },
+  "stock": 95,
+  "descripcion": "Galletas Pícaras con cobertura de chocolate",
+  "fecha_vencimiento": {
+    "$date": "2025-09-01T00:00:00.000Z"
+  },
+  "peso": 0.17,
+  "descuento": 3,
+  "imagen": "http://localhost:4000/uploads/galletas/picaras.png"
+}]

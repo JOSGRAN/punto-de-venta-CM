@@ -1,0 +1,40 @@
+[{
+  "_id": {
+    "$oid": "6813e316c2314e15177f3334"
+  },
+  "nombre": "frutas",
+  "descripcion": "Manzana",
+  "created_at": {
+    "$date": "2025-05-01T21:09:42.618Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6813e71fc2314e15177f3335"
+  },
+  "nombre": "verduras",
+  "descripcion": "lechuga,zanahoria,papa",
+  "created_at": {
+    "$date": "2025-05-01T21:26:55.051Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6813e7b1c2314e15177f3336"
+  },
+  "nombre": "gaseosas",
+  "descripcion": "Coca-cola,Inca-cola,Pepsi",
+  "created_at": {
+    "$date": "2025-05-01T21:29:21.978Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6813e8abc2314e15177f3337"
+  },
+  "nombre": "galletas",
+  "descripcion": "Oreo,Fiel,Picaras",
+  "created_at": {
+    "$date": "2025-05-01T21:33:31.117Z"
+  }
+}]
