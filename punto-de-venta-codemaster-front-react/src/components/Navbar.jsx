@@ -1,16 +1,69 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { AppBar, Toolbar, Typography, Button, Box } from '@mui/material';
+import React, { useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { 
+  AppBar, 
+  Toolbar, 
+  Typography, 
+  Button, 
+  Box, 
+  IconButton, 
+  Menu, 
+  MenuItem, 
+  Divider,
+  Badge,
+  Avatar,
+  useMediaQuery,
+  useTheme
+} from '@mui/material';
 import {
   ShoppingCart as VentasIcon,
   Category as CategoriasIcon,
   Inventory as ProductosIcon,
   Home as InicioIcon,
   People as ClientesIcon,
-  PointOfSale as PuntoVentaIcon
+  PointOfSale as PuntoVentaIcon,
+  Menu as MenuIcon,
+  Notifications as NotificationsIcon,
+  AccountCircle as AccountIcon,
+  Settings as SettingsIcon,
+  ExitToApp as LogoutIcon
 } from '@mui/icons-material';
 
 const Navbar = () => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const location = useLocation();
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [mobileMenuAnchor, setMobileMenuAnchor] = useState(null);
+  
+  const handleMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  
+  const handleMobileMenuOpen = (event) => {
+    setMobileMenuAnchor(event.currentTarget);
+  };
+  
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+    setMobileMenuAnchor(null);
+  };
+
+  const navItems = [
+    { path: '/', label: 'Inicio', icon: <InicioIcon /> },
+    { path: '/productos', label: 'Productos', icon: <ProductosIcon /> },
+    { path: '/categorias', label: 'Categorías', icon: <CategoriasIcon /> },
+    { path: '/ventas', label: 'Ventas', icon: <VentasIcon />, badge: 3 },
+    { path: '/clientes', label: 'Clientes', icon: <ClientesIcon /> }
+  ];
+
+  const userMenuItems = [
+    { label: 'Perfil', icon: <AccountIcon />, action: () => console.log('Perfil') },
+    { label: 'Configuración', icon: <SettingsIcon />, action: () => console.log('Configuración') },
+    { divider: true },
+    { label: 'Cerrar sesión', icon: <LogoutIcon />, action: () => console.log('Cerrar sesión') }
+  ];
+
   return (
     <AppBar 
       position="sticky"
@@ -20,163 +73,239 @@ const Navbar = () => {
         backdropFilter: 'blur(8px)',
         borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
         transition: 'all 0.3s ease',
-        '&:hover': {
-          boxShadow: '0 6px 25px rgba(0, 0, 0, 0.3)'
-        }
+        zIndex: theme.zIndex.drawer + 1
       }}
     >
       <Toolbar sx={{ 
         minHeight: '70px',
-        padding: { xs: '0 10px', md: '0 24px' }
+        padding: { xs: '0 10px', md: '0 24px' },
+        justifyContent: 'space-between'
       }}>
-        {/* Logo/Título */}
+        {/* Logo/Título y Menú Mobile */}
         <Box sx={{ 
           display: 'flex', 
           alignItems: 'center',
-          mr: 3,
-          '&:hover': {
-            transform: 'scale(1.02)'
-          },
-          transition: 'transform 0.2s'
+          flexGrow: isMobile ? 1 : 0
         }}>
-          <PuntoVentaIcon sx={{ 
-            fontSize: '2rem',
-            mr: 1,
-            color: '#fff'
-          }} />
-          <Typography 
-            variant="h6" 
+          {isMobile && (
+            <IconButton
+              color="inherit"
+              aria-label="open menu"
+              edge="start"
+              onClick={handleMobileMenuOpen}
+              sx={{ mr: 1 }}
+            >
+              <MenuIcon />
+            </IconButton>
+          )}
+          
+          <Box 
             component={Link}
             to="/"
             sx={{ 
-              fontWeight: 800,
-              letterSpacing: '1.5px',
+              display: 'flex', 
+              alignItems: 'center',
               textDecoration: 'none',
-              color: 'white',
-              display: { xs: 'none', sm: 'block' },
-              fontFamily: '"Segoe UI", Roboto, sans-serif',
-              textTransform: 'uppercase',
-              background: 'linear-gradient(to right, #ffffff, #e0f7fa)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent'
+              '&:hover': {
+                transform: 'scale(1.02)'
+              },
+              transition: 'transform 0.2s'
             }}
           >
-            Punto de Venta
-          </Typography>
+            <PuntoVentaIcon sx={{ 
+              fontSize: '2rem',
+              mr: 1,
+              color: '#fff'
+            }} />
+            <Typography 
+              variant="h6" 
+              sx={{ 
+                fontWeight: 800,
+                letterSpacing: '1.5px',
+                color: 'white',
+                display: { xs: 'none', sm: 'block' },
+                fontFamily: '"Segoe UI", Roboto, sans-serif',
+                textTransform: 'uppercase',
+                background: 'linear-gradient(to right, #ffffff, #e0f7fa)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent'
+              }}
+            >
+              Punto de Venta
+            </Typography>
+          </Box>
         </Box>
 
-        {/* Menú principal */}
-        <Box sx={{ 
-          display: 'flex', 
-          flexGrow: 1,
-          justifyContent: 'center',
-          gap: { xs: '2px', sm: '10px' }
-        }}>
-          <Button 
-            component={Link}
-            to="/"
-            startIcon={<InicioIcon />}
-            sx={{
-              color: 'white',
-              fontWeight: 600,
-              fontSize: { xs: '0.7rem', sm: '0.875rem' },
-              px: { xs: 1, sm: 2 },
-              '&:hover': {
-                backgroundColor: 'rgba(255, 255, 255, 0.15)',
-                transform: 'translateY(-2px)'
-              },
-              transition: 'all 0.3s ease'
-            }}
-          >
-            Inicio
-          </Button>
-          
-          <Button 
-            component={Link}
-            to="/productos"
-            startIcon={<ProductosIcon />}
-            sx={{
-              color: 'white',
-              fontWeight: 600,
-              fontSize: { xs: '0.7rem', sm: '0.875rem' },
-              px: { xs: 1, sm: 2 },
-              '&:hover': {
-                backgroundColor: 'rgba(255, 255, 255, 0.15)',
-                transform: 'translateY(-2px)'
-              },
-              transition: 'all 0.3s ease'
-            }}
-          >
-            Productos
-          </Button>
-          
-          <Button 
-            component={Link}
-            to="/categorias"
-            startIcon={<CategoriasIcon />}
-            sx={{
-              color: 'white',
-              fontWeight: 600,
-              fontSize: { xs: '0.7rem', sm: '0.875rem' },
-              px: { xs: 1, sm: 2 },
-              '&:hover': {
-                backgroundColor: 'rgba(255, 255, 255, 0.15)',
-                transform: 'translateY(-2px)'
-              },
-              transition: 'all 0.3s ease'
-            }}
-          >
-            Categorías
-          </Button>
-          
-          <Button 
-            component={Link}
-            to="/ventas"
-            startIcon={<VentasIcon />}
-            sx={{
-              color: 'white',
-              fontWeight: 600,
-              fontSize: { xs: '0.7rem', sm: '0.875rem' },
-              px: { xs: 1, sm: 2 },
-              '&:hover': {
-                backgroundColor: 'rgba(255, 255, 255, 0.15)',
-                transform: 'translateY(-2px)'
-              },
-              transition: 'all 0.3s ease'
-            }}
-          >
-            Ventas
-          </Button>
-          
-          <Button 
-            component={Link}
-            to="/clientes"
-            startIcon={<ClientesIcon />}
-            sx={{
-              color: 'white',
-              fontWeight: 600,
-              fontSize: { xs: '0.7rem', sm: '0.875rem' },
-              px: { xs: 1, sm: 2 },
-              '&:hover': {
-                backgroundColor: 'rgba(255, 255, 255, 0.15)',
-                transform: 'translateY(-2px)'
-              },
-              transition: 'all 0.3s ease'
-            }}
-            
-          >
-            Clientes
-          </Button>
-        </Box>
+        {/* Menú principal - Desktop */}
+        {!isMobile && (
+          <Box sx={{ 
+            display: 'flex', 
+            flexGrow: 1,
+            justifyContent: 'center',
+            gap: '5px',
+            mx: 2
+          }}>
+            {navItems.map((item) => (
+              <Button 
+                key={item.path}
+                component={Link}
+                to={item.path}
+                startIcon={item.icon}
+                sx={{
+                  color: 'white',
+                  fontWeight: 600,
+                  fontSize: '0.875rem',
+                  px: 2,
+                  minWidth: 'auto',
+                  backgroundColor: location.pathname === item.path ? 
+                    'rgba(255, 255, 255, 0.2)' : 'transparent',
+                  '&:hover': {
+                    backgroundColor: 'rgba(255, 255, 255, 0.15)',
+                    transform: 'translateY(-2px)'
+                  },
+                  transition: 'all 0.3s ease',
+                  position: 'relative',
+                  '&::after': {
+                    content: '""',
+                    position: 'absolute',
+                    bottom: 0,
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    width: location.pathname === item.path ? '80%' : '0',
+                    height: '3px',
+                    backgroundColor: '#fff',
+                    borderRadius: '3px 3px 0 0',
+                    transition: 'width 0.3s ease'
+                  }
+                }}
+              >
+                {item.badge ? (
+                  <Badge badgeContent={item.badge} color="error" sx={{ mr: 1 }}>
+                    {item.label}
+                  </Badge>
+                ) : item.label}
+              </Button>
+            ))}
+          </Box>
+        )}
 
-        {/* Espacio para elementos del lado derecho (como usuario) */}
+        {/* Elementos del lado derecho */}
         <Box sx={{ 
           display: 'flex',
           alignItems: 'center',
-          ml: 2
+          gap: 1
         }}>
-          {/* Aquí podrías añadir un selector de tema, icono de usuario, etc. */}
+          <IconButton color="inherit" sx={{ p: 1 }}>
+            <Badge badgeContent={5} color="error">
+              <NotificationsIcon />
+            </Badge>
+          </IconButton>
+          
+          <Button
+            startIcon={<Avatar sx={{ width: 28, height: 28 }}>U</Avatar>}
+            endIcon={!isMobile && <AccountIcon />}
+            onClick={handleMenuOpen}
+            sx={{
+              color: 'white',
+              textTransform: 'none',
+              fontWeight: 500,
+              '&:hover': {
+                backgroundColor: 'rgba(255, 255, 255, 0.1)'
+              }
+            }}
+          >
+            {!isMobile && 'Usuario Admin'}
+          </Button>
         </Box>
+
+        {/* Menú de usuario */}
+        <Menu
+          anchorEl={anchorEl}
+          open={Boolean(anchorEl)}
+          onClose={handleMenuClose}
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'right',
+          }}
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'right',
+          }}
+          PaperProps={{
+            sx: {
+              mt: 1.5,
+              minWidth: 200,
+              boxShadow: '0 4px 20px rgba(0, 0, 0, 0.25)',
+              '& .MuiAvatar-root': {
+                width: 32,
+                height: 32,
+                ml: -0.5,
+                mr: 1,
+              },
+            },
+          }}
+        >
+          <MenuItem onClick={handleMenuClose} sx={{ py: 1.5 }}>
+            <Avatar /> Perfil
+          </MenuItem>
+          <Divider />
+          {userMenuItems.map((item, index) => (
+            item.divider ? 
+              <Divider key={`divider-${index}`} /> : 
+              <MenuItem 
+                key={item.label}
+                onClick={() => {
+                  item.action();
+                  handleMenuClose();
+                }}
+                sx={{ py: 1.5 }}
+              >
+                <Box sx={{ mr: 1.5 }}>{item.icon}</Box>
+                {item.label}
+              </MenuItem>
+          ))}
+        </Menu>
+
+        {/* Menú Mobile */}
+        <Menu
+          anchorEl={mobileMenuAnchor}
+          open={Boolean(mobileMenuAnchor)}
+          onClose={handleMenuClose}
+          PaperProps={{
+            sx: {
+              width: '80%',
+              maxWidth: 300,
+              mt: 1.5,
+              boxShadow: '0 4px 20px rgba(0, 0, 0, 0.25)',
+            },
+          }}
+        >
+          {navItems.map((item) => (
+            <MenuItem 
+              key={item.path}
+              component={Link}
+              to={item.path}
+              onClick={handleMenuClose}
+              selected={location.pathname === item.path}
+              sx={{
+                py: 1.5,
+                '&.Mui-selected': {
+                  backgroundColor: theme.palette.action.selected,
+                  '&:hover': {
+                    backgroundColor: theme.palette.action.hover
+                  }
+                }
+              }}
+            >
+              <Box sx={{ mr: 1.5 }}>{item.icon}</Box>
+              {item.badge ? (
+                <Badge badgeContent={item.badge} color="error" sx={{ mr: 1 }}>
+                  {item.label}
+                </Badge>
+              ) : item.label}
+            </MenuItem>
+          ))}
+        </Menu>
       </Toolbar>
     </AppBar>
   );
