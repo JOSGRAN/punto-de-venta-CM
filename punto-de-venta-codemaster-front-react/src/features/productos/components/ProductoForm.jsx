@@ -20,12 +20,12 @@ import {
   Cancel, 
   Save,
   ExpandMore,
-  ExpandLess
+  ExpandLess,
+  Image
 } from '@mui/icons-material';
 import { useCategorias } from '../../categorias/context/CategoriaContext';
 import { styled } from '@mui/material/styles';
 
-// Componente de título estilizado
 const FormTitle = styled(Typography)(({ theme }) => ({
   fontWeight: 600,
   letterSpacing: '0.5px',
@@ -43,7 +43,6 @@ const FormTitle = styled(Typography)(({ theme }) => ({
   }
 }));
 
-// Botón personalizado
 const ActionButton = styled(Button)(({ theme }) => ({
   fontWeight: 600,
   letterSpacing: '0.5px',
@@ -63,23 +62,28 @@ const ProductoForm = ({ initialData, onSubmit, onCancel }) => {
     precio: 0,
     categoria_id: '',
     stock: 0,
-    caracteristicas: {}
+    caracteristicas: {},
+    imagen: null,
+    imagenPreview: null
   });
   const [expanded, setExpanded] = useState(false);
   const [newFeature, setNewFeature] = useState({ key: '', value: '' });
 
   useEffect(() => {
     if (initialData) {
+      const caracteristicas = typeof initialData.caracteristicas === 'object' && 
+                            !Array.isArray(initialData.caracteristicas) ?
+                            initialData.caracteristicas : {};
+      
       setFormData({
         nombre: initialData.nombre || '',
         precio: initialData.precio || 0,
         categoria_id: initialData.categoria_id || '',
         stock: initialData.stock || 0,
-        caracteristicas: initialData.caracteristicas || {}
+        caracteristicas: caracteristicas,
+        imagen: null,
+        imagenPreview: initialData.imagen || null
       });
-      if (Object.keys(initialData.caracteristicas || {}).length > 0) {
-        setExpanded(true);
-      }
     }
   }, [initialData]);
 
@@ -99,6 +103,39 @@ const ProductoForm = ({ initialData, onSubmit, onCancel }) => {
         ...prev.caracteristicas,
         [name]: value
       }
+    }));
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      if (!file.type.match('image.*')) {
+        alert('Por favor, selecciona solo archivos de imagen (JPEG, PNG)');
+        return;
+      }
+      
+      if (file.size > 5 * 1024 * 1024) {
+        alert('La imagen no debe exceder los 5MB');
+        return;
+      }
+      
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setFormData(prev => ({
+          ...prev,
+          imagen: file,
+          imagenPreview: reader.result
+        }));
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleRemoveImage = () => {
+    setFormData(prev => ({
+      ...prev,
+      imagen: null,
+      imagenPreview: null
     }));
   };
 
@@ -126,7 +163,23 @@ const ProductoForm = ({ initialData, onSubmit, onCancel }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit(formData);
+    
+    const formDataToSend = new FormData();
+    
+    Object.keys(formData).forEach(key => {
+      if (key === 'caracteristicas') {
+        formDataToSend.append(key, JSON.stringify(formData[key]));
+      } else if (key !== 'imagenPreview' && formData[key] !== null) {
+        formDataToSend.append(key, formData[key]);
+      }
+    });
+    
+    if (formData.imagen) {
+      formDataToSend.append('imagen', formData.imagen);
+      formDataToSend.append('categoria', formData.categoria_id);
+    }
+    
+    onSubmit(formDataToSend);
   };
 
   return (
@@ -143,7 +196,6 @@ const ProductoForm = ({ initialData, onSubmit, onCancel }) => {
         
         <Box component="form" onSubmit={handleSubmit} sx={{ mt: 2 }}>
           <Grid container spacing={3}>
-            {/* Información Básica */}
             <Grid item xs={12} md={6}>
               <TextField
                 required
@@ -154,9 +206,6 @@ const ProductoForm = ({ initialData, onSubmit, onCancel }) => {
                 fullWidth
                 variant="outlined"
                 sx={{ mb: 2 }}
-                InputProps={{
-                  sx: { borderRadius: '8px' }
-                }}
               />
               
               <TextField
@@ -170,8 +219,7 @@ const ProductoForm = ({ initialData, onSubmit, onCancel }) => {
                 sx={{ mb: 2 }}
                 InputProps={{
                   startAdornment: <Typography sx={{ mr: 1 }}>$</Typography>,
-                  inputProps: { step: "0.01", min: "0" },
-                  sx: { borderRadius: '8px' }
+                  inputProps: { step: "0.01", min: "0" }
                 }}
               />
               
@@ -184,9 +232,6 @@ const ProductoForm = ({ initialData, onSubmit, onCancel }) => {
                 onChange={handleChange}
                 fullWidth
                 sx={{ mb: 2 }}
-                InputProps={{
-                  sx: { borderRadius: '8px' }
-                }}
               >
                 {categorias.map((categoria) => (
                   <MenuItem key={categoria._id} value={categoria._id}>
@@ -203,66 +248,102 @@ const ProductoForm = ({ initialData, onSubmit, onCancel }) => {
                 onChange={handleChange}
                 fullWidth
                 InputProps={{
-                  inputProps: { min: "0" },
-                  sx: { borderRadius: '8px' }
+                  inputProps: { min: "0" }
                 }}
               />
             </Grid>
 
-            {/* Características */}
             <Grid item xs={12} md={6}>
-              <Box 
-                sx={{ 
-                  border: '1px solid',
-                  borderColor: 'divider',
-                  borderRadius: '8px',
-                  p: 2,
-                  mb: 2
-                }}
-              >
-                <Box 
-                  sx={{ 
+              <Box sx={{ mb: 3, p: 2, border: '1px dashed', borderRadius: 1 }}>
+                <Typography variant="subtitle1" gutterBottom>
+                  Imagen del Producto
+                </Typography>
+                
+                {formData.imagenPreview ? (
+                  <Box sx={{ position: 'relative', mb: 2 }}>
+                    <img 
+                      src={formData.imagenPreview} 
+                      alt="Preview" 
+                      style={{ 
+                        maxWidth: '100%', 
+                        maxHeight: '200px',
+                        borderRadius: '8px',
+                        display: 'block',
+                        margin: '0 auto'
+                      }} 
+                    />
+                    <IconButton
+                      onClick={handleRemoveImage}
+                      sx={{ 
+                        position: 'absolute', 
+                        top: 8, 
+                        right: 8,
+                        backgroundColor: 'rgba(255,255,255,0.8)'
+                      }}
+                      color="error"
+                    >
+                      <RemoveCircle />
+                    </IconButton>
+                  </Box>
+                ) : (
+                  <Box sx={{ 
                     display: 'flex', 
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    cursor: 'pointer'
-                  }}
-                  onClick={() => setExpanded(!expanded)}
+                    alignItems: 'center', 
+                    justifyContent: 'center',
+                    height: 100,
+                    backgroundColor: '#f5f5f5',
+                    borderRadius: 1,
+                    mb: 2
+                  }}>
+                    <Image color="disabled" sx={{ fontSize: 48 }} />
+                  </Box>
+                )}
+                
+                <Button
+                  variant="outlined"
+                  component="label"
+                  fullWidth
+                  startIcon={<AddCircle />}
                 >
+                  {formData.imagenPreview ? 'Cambiar Imagen' : 'Seleccionar Imagen'}
+                  <input
+                    type="file"
+                    hidden
+                    accept="image/*"
+                    onChange={handleImageChange}
+                  />
+                </Button>
+                
+                <Typography variant="caption" sx={{ mt: 1, display: 'block' }}>
+                  Formatos: JPEG, PNG (Máx. 5MB)
+                </Typography>
+              </Box>
+
+              <Box sx={{ border: '1px solid', borderColor: 'divider', borderRadius: 1, p: 2 }}>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <Typography variant="subtitle1" fontWeight={600}>
                     Características
                   </Typography>
-                  {expanded ? <ExpandLess /> : <ExpandMore />}
+                  <IconButton onClick={() => setExpanded(!expanded)}>
+                    {expanded ? <ExpandLess /> : <ExpandMore />}
+                  </IconButton>
                 </Box>
 
                 <Collapse in={expanded}>
                   <Divider sx={{ my: 2 }} />
                   
-                  {/* Características existentes */}
                   {Object.entries(formData.caracteristicas).map(([key, value]) => (
                     <Box key={key} sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
                       <Chip 
                         label={`${key}: ${value}`}
-                        sx={{ 
-                          mr: 1,
-                          flex: 1,
-                          justifyContent: 'space-between',
-                          borderRadius: '6px'
-                        }}
+                        sx={{ flex: 1, justifyContent: 'space-between' }}
                       />
-                      <Tooltip title="Eliminar característica">
-                        <IconButton 
-                          size="small" 
-                          onClick={() => handleRemoveFeature(key)}
-                          color="error"
-                        >
-                          <RemoveCircle fontSize="small" />
-                        </IconButton>
-                      </Tooltip>
+                      <IconButton onClick={() => handleRemoveFeature(key)} size="small" color="error">
+                        <RemoveCircle fontSize="small" />
+                      </IconButton>
                     </Box>
                   ))}
 
-                  {/* Agregar nueva característica */}
                   <Box sx={{ display: 'flex', gap: 1, mt: 2 }}>
                     <TextField
                       size="small"
@@ -278,91 +359,32 @@ const ProductoForm = ({ initialData, onSubmit, onCancel }) => {
                       onChange={(e) => setNewFeature({...newFeature, value: e.target.value})}
                       sx={{ flex: 1 }}
                     />
-                    <Tooltip title="Agregar característica">
-                      <IconButton 
-                        color="primary"
-                        onClick={handleAddFeature}
-                        disabled={!newFeature.key || !newFeature.value}
-                      >
-                        <AddCircle />
-                      </IconButton>
-                    </Tooltip>
+                    <IconButton 
+                      onClick={handleAddFeature}
+                      disabled={!newFeature.key || !newFeature.value}
+                      color="primary"
+                    >
+                      <AddCircle />
+                    </IconButton>
                   </Box>
                 </Collapse>
               </Box>
-
-              {/* Características comunes */}
-              <Grid container spacing={1}>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    label="Marca"
-                    name="marca"
-                    value={formData.caracteristicas.marca || ''}
-                    onChange={handleCaracteristicaChange}
-                    fullWidth
-                    sx={{ mb: 1 }}
-                    InputProps={{
-                      sx: { borderRadius: '8px' }
-                    }}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    label="Color"
-                    name="color"
-                    value={formData.caracteristicas.color || ''}
-                    onChange={handleCaracteristicaChange}
-                    fullWidth
-                    sx={{ mb: 1 }}
-                    InputProps={{
-                      sx: { borderRadius: '8px' }
-                    }}
-                  />
-                </Grid>
-              </Grid>
             </Grid>
           </Grid>
 
-          {/* Acciones */}
-          <Box sx={{ 
-            display: 'flex', 
-            justifyContent: 'flex-end', 
-            gap: 2,
-            mt: 4,
-            pt: 2,
-            borderTop: '1px solid',
-            borderColor: 'divider'
-          }}>
-            {onCancel && (
-              <ActionButton
-                variant="outlined"
-                onClick={onCancel}
-                startIcon={<Cancel />}
-                sx={{
-                  color: 'text.secondary',
-                  borderColor: 'divider',
-                  '&:hover': {
-                    borderColor: 'primary.light',
-                    color: 'primary.main'
-                  }
-                }}
-              >
-                Cancelar
-              </ActionButton>
-            )}
+          <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2, mt: 4 }}>
+            <ActionButton
+              variant="outlined"
+              onClick={onCancel}
+              startIcon={<Cancel />}
+            >
+              Cancelar
+            </ActionButton>
             <ActionButton
               type="submit"
               variant="contained"
               color="primary"
               startIcon={<Save />}
-              sx={{
-                px: 4,
-                background: (theme) => 
-                  `linear-gradient(45deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%)`,
-                '&:hover': {
-                  boxShadow: (theme) => theme.shadows[6]
-                }
-              }}
             >
               {initialData ? 'Actualizar Producto' : 'Guardar Producto'}
             </ActionButton>

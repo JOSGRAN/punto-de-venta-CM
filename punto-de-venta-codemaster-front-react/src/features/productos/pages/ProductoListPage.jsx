@@ -36,19 +36,23 @@ const ProductoListPage = () => {
     setShowForm(true);
   };
 
-  const handleSubmit = async (formData) => {
-    try {
-      if (editingProducto) {
-        await editProducto(editingProducto._id, formData);
-      } else {
-        await addProducto(formData);
-      }
-      setShowForm(false);
-    } catch (error) {
-      console.error('Error al guardar producto:', error);
+const handleSubmit = async (formData) => {
+  try {
+    if (editingProducto) {
+      await editProducto(editingProducto._id, formData);
+      // Mostrar feedback al usuario
+      alert('Producto actualizado correctamente');
+    } else {
+      await addProducto(formData);
+      alert('Producto creado correctamente');
     }
-  };
-
+    setShowForm(false);
+  } catch (error) {
+    console.error('Error al guardar producto:', error);
+    // Mostrar error al usuario
+    alert(error.message || 'Error al guardar el producto');
+  }
+};
   const handleDelete = async (id) => {
     if (window.confirm('¿Estás seguro de eliminar este producto?')) {
       try {

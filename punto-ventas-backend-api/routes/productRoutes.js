@@ -50,5 +50,58 @@ router.get('/', async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+// productRoutes.js
+router.put('/:id', upload.single('imagen'), async (req, res) => {
+  try {
+    const { id } = req.params;
+    
+    // Validar que el ID sea válido
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ error: 'ID de producto no válido' });
+    }
 
+    const updates = {
+      ...req.body,
+      updatedAt: Date.now()
+    };
+
+    // Manejo de imagen si se subió una nueva
+    if (req.file) {
+      const categoria = req.body.categoria_id || 'otros';
+      updates.imagen = `/uploads/productos/${categoria}/${req.file.filename}`;
+      
+      // Eliminar imagen anterior si existe
+      const producto = await Product.findById(id);
+      if (producto?.imagen) {
+        const oldImagePath = path.join(__dirname, '..', 'public', producto.imagen);
+        if (fs.existsSync(oldImagePath)) fs.unlinkSync(oldImagePath);
+      }
+    }
+
+    const productoActualizado = await Product.findByIdAndUpdate(
+      id,
+      updates,
+      { new: true, runValidators: true }
+    ).populate('categoria_id');
+
+    if (!productoActualizado) {
+      if (req.file) fs.unlinkSync(req.file.path);
+      return res.status(404).json({ error: 'Producto no encontrado' });
+    }
+
+    res.json({
+      success: true,
+      data: productoActualizado
+    });
+  } catch (err) {
+    console.error('Error al actualizar producto:', err);
+    
+    if (req.file) fs.unlinkSync(req.file.path);
+    
+    res.status(500).json({ 
+      error: 'Error al actualizar producto',
+      details: process.env.NODE_ENV === 'development' ? err.message : undefined
+    });
+  }
+});
 module.exports = router;

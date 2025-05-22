@@ -36,17 +36,35 @@ export const ProductoProvider = ({ children }) => {
     }
   };
 
-  const editProducto = async (id, producto) => {
-    try {
-      const updatedProducto = await updateProducto(id, producto);
-      setProductos(productos.map(prod => 
-        prod._id === id ? updatedProducto : prod
-      ));
-      return updatedProducto;
-    } catch (err) {
-      throw err;
+const editProducto = async (id, producto) => {
+  try {
+    // Convertir a FormData si hay imagen
+    let productoData;
+    if (producto.imagen && typeof producto.imagen !== 'string') {
+      productoData = new FormData();
+      Object.keys(producto).forEach(key => {
+        if (key === 'caracteristicas') {
+          productoData.append(key, JSON.stringify(producto[key]));
+        } else if (key !== 'imagenPreview') {
+          productoData.append(key, producto[key]);
+        }
+      });
+      if (producto.imagen) {
+        productoData.append('imagen', producto.imagen);
+      }
+    } else {
+      productoData = producto;
     }
-  };
+
+    const updatedProducto = await updateProducto(id, productoData);
+    setProductos(prev => prev.map(p => p._id === id ? updatedProducto : p));
+    return updatedProducto;
+  } catch (err) {
+    console.error('Error en editProducto:', err);
+    setError(err.message || 'Error al actualizar producto');
+    throw err;
+  }
+};
 
   const removeProducto = async (id) => {
     try {
